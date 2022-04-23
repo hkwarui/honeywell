@@ -1,7 +1,6 @@
 <?php 
- require_once 'auth.php';
-
- $transaction_type = 'cash_sales'
+    require_once 'auth.php';
+    $transaction_type = 'cash_sales'
  ?>
 
 <html>
@@ -34,7 +33,7 @@
     setTimeout("$('#suggestions').fadeOut();", 600);
     </script>
 
-      <script src="../static/js/application.js"></script>
+    <script src="../static/js/application.js"></script>
 
     <style>
     #result {
@@ -133,22 +132,17 @@
                 <div class="suggestionsBox" id="suggestions" style="display: none;">
                     <div class="suggestionList" id="suggestionsList"> &nbsp; </div>
                 </div>
-                <?php
-$asas = $_GET['pt'];
-if ($asas == 'credit') {
-    ?>Due Date: <input type="date" name="due" placeholder="Due Date"
-                    style="width: 268px; height:30px; margin-bottom: 15px;" /><br>
-                <?php
-}
-if ($asas == 'cash') {
-    ?>
 
-                <input type="number" name="cash" min=<?php echo $_GET['total']; ?> placeholder="Cash"
-                    style="width: 268px; height:30px;  margin-bottom: 15px;" required /><br>
-                <?php
-}
-?><button class="btn btn-success btn-block btn-large" style="width:267px;"><i class="icon icon-save icon-large"></i>
-                    Save</button>
+                <?php $asas = $_GET['pt']; ?>
+
+                <input type="number" name="cash_tendered" min=<?php echo $_GET['total']; ?> placeholder="Cash"
+                    style="width: 268px; height:30px;  margin-bottom: 15px;" required />
+                <br>
+
+                <button class="btn btn-success btn-block btn-large" style="width:267px;">
+                    <i class="icon icon-save icon-large"></i>
+                    Save
+                </button>
             </center>
         </div>
     </form>

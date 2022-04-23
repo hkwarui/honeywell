@@ -2,7 +2,26 @@
     require_once  'auth.php';
     require_once '../includes/db_connect.php';
     require_once '../includes/receiptNumber.php';
-?>
+
+    /**
+     * Function to format currency
+     */
+    
+    function formatMoney($number, $fractional = false)
+{
+        if ($fractional) { $number = sprintf('%.2f', $number);  }
+
+        while (true) {
+            $replaced = preg_replace('/(-?\d+)(\d\d\d)/', '$1,$2', $number);
+            if ($replaced != $number) { $number = $replaced; } 
+            else {  break; }
+        }
+        
+        return $number; 
+    }
+
+    ?>
+
 
 <!DOCTYPE html>
 <html>
@@ -94,6 +113,7 @@
         $date = $row['date'];
         $cash = $row['due_date'];
         $cashier = $row['cashier'];
+        $balance = $row['balance'];
 
         $pt = $row['type'];
         $am = $row['amount'];
@@ -184,26 +204,34 @@ and get more free JavaScript, CSS and DHTML scripts! */
                         <div style="width: 100%; height: 190px;">
                             <div style="float: left;">
                                 <center>
-                                    <div style="width:400px; font:bold 20px 'Aleo';">KIKI EMPIRE OUTLETS 2</div>
-                                    Wholesale & Retail <br> Tel:0722694288 <br><br>
+                                    <div style="font:bold 14px 'Aleo'">
+                                        <div style="width:400px; ;">KIKI EMPIRE OUTLETS 2</div>
+                                        Wholesale & Retail <br> Tel:0722694288 <br><br>
+                                    </div>
                                 </center>
                                 <div>
                                 </div>
                             </div>
                             <div style="float: left;">
                                 <table cellpadding="5" cellspacing="0"
-                                    style="font-family: arial; font-size: nnnnn12px; width: 100%;">
-
-                                    <tr>
-                                        <td>RCT :<?php echo $invoice ?></td>
-                                        <td>Date :<?php echo date("d/m/y  H:i") ?></td>
+                                    style="font-family: arial; font-size:12px; width: 100%;">
+                                    <tr style="text-align:left;">
+                                        <td>NO#:<?php echo $invoice ?></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td>Customer: <?php echo $cname; ?></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td style="float:right">Date :<?php echo date("d/m/y  H:i") ?></td>
                                     </tr>
                                 </table>
 
                             </div>
                             <div class="clearfix"></div>
                         </div>
-                        <div style="width: 100%; margin-top:-70px;">
+                        <div style="width: 100%; margin-top:-100px;">
                             <table border="1" cellpadding="4" cellspacing="0"
                                 style="font-family: arial; font-size: 12px;	text-align:left;" width="100%">
                                 <thead>
@@ -260,57 +288,31 @@ and get more free JavaScript, CSS and DHTML scripts! */
                                                 ?>
                                             </strong></td>
                                     </tr>
-                                    <?php if ($pt == 'cash') {
-                                    ?>
                                     <tr>
-                                        <td colspan="3" style=" text-align:right;"><strong
-                                                style="font-size: 12px; color: #222222;">Cash
-                                                Tendered:&nbsp;</strong></td>
-                                        <td colspan="2"><strong style="font-size: 12px; color: #222222;">
+                                        <td colspan="3" style=" text-align:right;">
+                                            <strong style="font-size: 12px; color: #222222;">Cash
+                                                Tendered:&nbsp;
+                                            </strong>
+                                        </td>
+                                        <td colspan="2">
+                                            <strong style="font-size: 12px; color: #222222;">
                                                 <?php
                                                     echo formatMoney($cash, true);
-                                                    ?>
-                                            </strong></td>
+                                                ?>
+                                            </strong>
+                                        </td>
                                     </tr>
-                                    <?php
-                                    }
-                                    ?>
                                     <tr>
                                         <td colspan="3" style=" text-align:right;"><strong
                                                 style="font-size: 12px; color: #222222;">
                                                 <font style="font-size:14px;">
                                                     <?php
-                                                    if ($pt == 'cash') {
-                                                        echo 'Change:';
-                                                    }
-                                                    if ($pt == 'credit') {
-                                                        echo 'Due Date:';
-                                                    }
+                                                        echo 'Change:';                                                   
                                                     ?>&nbsp;
                                             </strong></td>
                                         <td colspan="2"><strong style="font-size: 14px; color: #222222;">
                                                 <?php
-                                                function formatMoney($number, $fractional = false)
-                                                {
-                                                    if ($fractional) {
-                                                        $number = sprintf('%.2f', $number);
-                                                    }
-                                                    while (true) {
-                                                        $replaced = preg_replace('/(-?\d+)(\d\d\d)/', '$1,$2', $number);
-                                                        if ($replaced != $number) {
-                                                            $number = $replaced;
-                                                        } else {
-                                                            break;
-                                                        }
-                                                    }
-                                                    return $number;
-                                                }
-                                                if ($pt == 'credit') {
-                                                    echo $cash;
-                                                }
-                                                if ($pt == 'cash') {
-                                                    echo formatMoney($amount, true);
-                                                }
+                                                   echo formatMoney($balance, true);
                                                 ?>
                                         </td>
                                     </tr>

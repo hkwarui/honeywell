@@ -3,7 +3,10 @@ require_once "auth.php";
 include_once "../includes/db_connect.php";
 include_once "../includes/header.php";
 
-//Format money function
+/**
+ * Format money function
+ */
+
 function formatMoney($number, $fractional = false)
 {
     if ($fractional) {
@@ -21,12 +24,12 @@ function formatMoney($number, $fractional = false)
 }
 
 //Get last insertedID 
-$sql = $db->prepare("SELECT max(transaction_id) FROM sales_order");
+$sql = $db->prepare("SELECT max(invoice_number) FROM sales");
 $sql->execute();
 $row = $sql->fetchColumn();
 
-//Get the invoice no.
-$sql1 = $db->prepare("SELECT invoice FROM sales_order WHERE transaction_id ='$row'");
+// Get the invoice no.
+$sql1 = $db->prepare("SELECT `name` FROM sales WHERE invoice_number ='$row'");
 $sql1->execute();
 $row1 = $sql1->fetchColumn();
 
@@ -60,29 +63,47 @@ $row1 = $sql1->fetchColumn();
     <div class="container" style="width:100%; font-size:12px">
 
         <center>
-            <p><b>KIKI EMPIRE OUTLETS 2<br>Wholesale & Retail<br>Tel: 0722-679-288</b></p>
+            <p>
+                <b>
+                    KIKI EMPIRE OUTLETS 2
+                    </br>
+                    Wholesale & Retail
+                    </br>
+                    Tel: 0722-679-288
+                </b>
+            </p>
         </center>
-        <div class="tablediv" style="text-align: center;">
+
+        <div class="tablediv" style="text-align:center;">
             <table class=" table table-condensed center" cellpadding="1px" cellspacing="4px"
-                style="width:auto; font-size:12px;">
-                <p>RCT: <?php echo $row1 ?> <span style="text-align: right;margin-left:3px"><b> </b>Date:
-                        <?php echo date('d/m/y H:i') ?>
-                    </span>
+                style="width:auto; font-size:14px;">
+                <span>
+                    <b style="margin-left:-150px">
+                        Customer: <?php echo $row1; ?>
+                    </b>
+                </span>
+                <p style="margin-left:-20px; ">
+                    <b>
+                        No.#: <?php echo $row ?>
+                        <span style="text-align:justify;margin-left:30px">
+                            Date: <?php echo date('d/m/y H:i') ?>
+                        </span>
+                    </b>
                 </p>
                 <thead class="thead-dark">
                     <tr>
                         <th>#</th>
-                        <th>Items</th>
-                        <th>Qty</th>
-                        <th>Price</th>
-                        <th>Amount</th>
+                        <th>ITEM</th>
+                        <th>QTY</th>
+                        <th>PRICE</th>
+                        <th>AMOUNT</th>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody class="thead-dark">
                     <?php
                     $no = 1;
                     $result = $db->prepare("SELECT * FROM sales_order WHERE invoice= :userid");
-                    $result->bindParam(':userid', $row1);
+                    $result->bindParam(':userid', $row);
                     $result->execute();
                     while ($row2 = $result->fetch()) {
                     ?>
@@ -95,11 +116,11 @@ $row1 = $sql1->fetchColumn();
                     </tr>
                     <?php } ?>
                     <tr>
-                        <td colspan="4" style="text-align:right;"> <strong>Total</strong></td>
+                        <td colspan=" 4" style="text-align:right;"> <strong>Total</strong></td>
                         <?php
                         $result1 = $db->prepare("SELECT sum(amount) as total FROM sales_order WHERE invoice=
                         :userid");
-                        $result1->bindParam(':userid', $row1);
+                        $result1->bindParam(':userid', $row);
                         $result1->execute();
                         $row3 = $result1->fetchColumn()
                         ?>
@@ -112,7 +133,7 @@ $row1 = $sql1->fetchColumn();
             </table>
         </div>
         <center>
-            <p></br>Goods onces sold are not refundable</p>
+            <p>Goods onces sold are not refundable</p>
         </center>
     </div>
 </body>

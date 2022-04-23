@@ -3,6 +3,7 @@
     require_once '../includes/db_connect.php';
     require_once '../includes/receiptNumber.php';
 ?>
+
   <!DOCTYPE html>
   <html>
 
@@ -37,14 +38,10 @@
       }
       </style>
       <link href="../static/css/bootstrap-responsive.css" rel="stylesheet">
-      <!-- combosearch box-->
-      <script src="../static/vendors/jquery-1.7.2.min.js"></script>
+         <script src="../static/vendors/jquery-1.7.2.min.js"></script>
       <script src="../static/vendors/bootstrap.js"></script>
       <link href="../static/css/style.css" media="screen" rel="stylesheet" type="text/css" />
-      <!--sa poip up-->
-      <script language="javascript" type="text/javascript">
-      /* Visit http://www.yaldex.com/ for full source code
-and get more free JavaScript, CSS and DHTML scripts! */
+        <script language="javascript" type="text/javascript">
       <!-- Begin
       var timerID = null;
       var timerRunning = false;
@@ -75,8 +72,7 @@ and get more free JavaScript, CSS and DHTML scripts! */
           showtime();
       }
       window.onload = startclock;
-      // End -->
-      </script>
+            </script>
   </head>
 
   <body>
@@ -144,10 +140,10 @@ and get more free JavaScript, CSS and DHTML scripts! */
                       <select name="product" style="width:650px; " class="chzn-select" required>
                           <option></option>
                           <?php
-$result = $db->prepare("SELECT * FROM products WHERE qty > 0");
-$result->execute();
-for ($i = 0; $row = $result->fetch(); $i++) {
-    ?>
+                            $result = $db->prepare("SELECT * FROM products WHERE qty > 0");
+                            $result->execute();
+                           for ($i = 0; $row = $result->fetch(); $i++) {
+                          ?>
                           <option value="<?php echo $row['product_id']; ?>">
                               <?php echo strtoupper($row['product_name']); ?>
                               ----------------
@@ -276,13 +272,19 @@ for ($i = 0; $rows = $resultcr->fetch(); $i++) {
                   <a rel="facebox"
                       href="crcheckout.php?pt=<?php echo $_GET['id'] ?>&invoice=<?php echo $_GET['invoice'] ?>&total=<?php echo $fgfg ?>&totalprof=<?php echo $asd ?>&cashier=<?php echo $username ?>"><button
                           class="btn btn-info btn-large btn-inline" style="width: 200px;"><i
-                              class="icon icon-save icon-large"></i>
+                              class="icon icon-credit-card icon-large"></i>
                           CREDIT</button>
                   </a>
                   <a rel="facebox"
+                      href="mobile_checkout.php?pt=<?php echo $_GET['id'] ?>&invoice=<?php echo $_GET['invoice'] ?>&total=<?php echo $fgfg ?>&totalprof=<?php echo $asd ?>&cashier=<?php echo $username ?>"><button
+                          class="btn btn-large btn-inline" style="width: 200px; margin-left:50px; color:#900C3F;><i
+                              class="icon icon-mobile-phone icon-large"></i>
+                          M-Pesa / Equity </button>
+                  </a>
+                  <a rel="facebox"
                       href="checkout.php?pt=<?php echo $_GET['id'] ?>&invoice=<?php echo $_GET['invoice'] ?>&total=<?php echo $fgfg ?>&totalprof=<?php echo $asd ?>&cashier=<?php echo $username ?>"><button
-                          class="btn btn-success btn-large btn-inline" style="width: 700px;margin-left:100px"><i
-                              class="icon icon-save icon-large"></i>
+                          class="btn btn-success btn-large btn-inline" style="width: 500px;margin-left:50px"><i
+                              class="icon icon-money icon-large"></i>
                           CASH</button>
                   </a>
                   <div class="clearfix"></div>

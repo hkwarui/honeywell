@@ -2,7 +2,7 @@
 
 $DBhost = "localhost";
 $DBuser = "root";
-$DBpass = "28582027";
+$DBpass = "";
 $DBname = "new_sales";
 
 date_default_timezone_set('Africa/Nairobi');
@@ -18,7 +18,7 @@ if ($DBcon->connect_errno) {
 /* Database config */
 $db_host = 'localhost';
 $db_user = 'root';
-$db_pass = '28582027';
+$db_pass = '';
 $db_database = 'new_sales';
 date_default_timezone_set('Africa/Nairobi');
 
