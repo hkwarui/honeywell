@@ -29,9 +29,9 @@ $sql->execute();
 $row = $sql->fetchColumn();
 
 // Get the invoice no.
-$sql1 = $db->prepare("SELECT `name` FROM sales WHERE invoice_number ='$row'");
+$sql1 = $db->prepare("SELECT `name`,balance FROM sales WHERE invoice_number ='$row'");
 $sql1->execute();
-$row1 = $sql1->fetchColumn();
+$row1 = $sql1->fetch();
 
 
 ?>
@@ -76,15 +76,15 @@ $row1 = $sql1->fetchColumn();
 
         <div class="tablediv" style="text-align:center;">
             <table class=" table table-condensed center" cellpadding="1px" cellspacing="4px"
-                style="width:auto; font-size:14px;">
+                style="width:auto; font-size:16px;">
                 <span>
-                    <b style="margin-left:-150px">
-                        Customer: <?php echo $row1; ?>
+                    <b style="margin-left:-120px">
+                        Customer: <?php echo $row1['name']; ?>
                     </b>
                 </span>
                 <p style="margin-left:-20px; ">
                     <b>
-                        No.#: <?php echo $row ?>
+                        No#: <?php echo $row ?>
                         <span style="text-align:justify;margin-left:30px">
                             Date: <?php echo date('d/m/y H:i') ?>
                         </span>
@@ -126,6 +126,12 @@ $row1 = $sql1->fetchColumn();
                         ?>
                         <td colspan="1">
                             <strong><?php echo formatMoney($row3, true) ?></strong>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="4" style="text-align:right;"> Change </td>
+                        <td colspan="1">
+                            <?php echo formatMoney($row1['balance'],true); ?>
                         </td>
                     </tr>
 

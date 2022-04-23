@@ -8,7 +8,7 @@
      */
     
     function formatMoney($number, $fractional = false)
-{
+    {
         if ($fractional) { $number = sprintf('%.2f', $number);  }
 
         while (true) {
@@ -121,8 +121,11 @@
             $cash = $row['due_date'];
             $amount = (int) $cash - (int) $am;
         }
-    }
+    }   
+         $customer_name = isset($cname) ? $cname : "------------";
     ?>
+
+
 
     <script language="javascript" type="text/javascript">
     /* Visit http://www.yaldex.com/ for full source code
@@ -219,9 +222,8 @@ and get more free JavaScript, CSS and DHTML scripts! */
                                         <td>NO#:<?php echo $invoice ?></td>
                                         <td></td>
                                         <td></td>
-                                        <td></td>
-                                        <td>Customer: <?php echo $cname; ?></td>
-                                        <td></td>
+                                        <td>Customer: <?php echo $customer_name
+                                        ; ?></td>
                                         <td></td>
                                         <td></td>
                                         <td style="float:right">Date :<?php echo date("d/m/y  H:i") ?></td>
@@ -288,6 +290,9 @@ and get more free JavaScript, CSS and DHTML scripts! */
                                                 ?>
                                             </strong></td>
                                     </tr>
+                                    <?php  
+                                        if(isset($pt) && $pt =='cash_sales'){
+                                    ?>
                                     <tr>
                                         <td colspan="3" style=" text-align:right;">
                                             <strong style="font-size: 12px; color: #222222;">Cash
@@ -316,7 +321,7 @@ and get more free JavaScript, CSS and DHTML scripts! */
                                                 ?>
                                         </td>
                                     </tr>
-
+                                    <?php } ?>
                                 </tbody>
                             </table>
                             <center style="font-size:12px">

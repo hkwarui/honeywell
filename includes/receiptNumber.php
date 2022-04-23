@@ -7,6 +7,6 @@ include '../includes/db_connect.php';
       $receiptTag = 'TS';
      $currentYear = date('y');
      $receiptNumber = (int)$invoiceId + 1;
-     $invoiceNumber = $receiptTag.'-'.$currentYear.$receiptNumber;
+     $invoiceNumber = $receiptTag.$currentYear.$receiptNumber;
     
   ?>
