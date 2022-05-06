@@ -137,15 +137,14 @@ window.onload = startclock;
         <div class="contentheader">
           <i class="icon-group" style="color: yellow;"></i> <?php  echo $supplier_name; ?>
         </div>
-        <ul class="breadcrumb">
-        </ul>
-
+        <ul class="breadcrumb"></ul>
 
         <div style="margin-top: -19px; margin-bottom: 21px;">
+            <a href="supplier.php"><button class="btn btn-default btn-large" style="float: none;"><i class="icon icon-circle-arrow-left icon-large"></i> Back</button></a>
+        </div>
 
+        <div style="margin-top: -19px; margin-bottom: 21px;">
           <?php   $rowcount = $result->rowcount();  ?>
-
-
           <div style="text-align:center;">
             Total Number of Deliveries: <font color="green" style="font:bold 22px 'Aleo';"><?php echo $rowcount; ?>
             </font>
@@ -185,7 +184,7 @@ window.onload = startclock;
               <td>
                 <a rel="facebox" href="editSupplierDetails.php?delivery_id=<?php echo $row['id']; ?>&supplier_id=<?php echo $suplier_id; ?>"><i
                     class="icon-edit" title="Click to Edit" style="color:blue;"></i></a>
-                <a href="#" id="<?php echo $row['suplier_id']; ?>" class="delbutton"
+                <a href="#" id="<?php echo $row['id']; ?>" class="delbutton"
                   title="Click To Delete"><i class="icon-trash" style="color:red;"></i> </a> 
                 </td>
             </tr>
@@ -217,7 +216,7 @@ window.onload = startclock;
 
         $.ajax({
           type: "GET",
-          url: "deletesupplier.php",
+          url: "deletesupplierdetails.php",
           data: info,
           success: function() {
 
