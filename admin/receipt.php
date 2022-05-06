@@ -1,38 +1,51 @@
 <?php
-require_once "auth.php";
-include_once "../includes/db_connect.php";
-include_once "../includes/header.php";
+    require_once "auth.php";
+    include_once "../includes/db_connect.php";
+    include_once "../includes/header.php";
 
-/**
- * Format money function
- */
+    /**
+     * Format money function
+     */
 
-function formatMoney($number, $fractional = false)
-{
-    if ($fractional) {
-        $number = sprintf('%.2f', $number);
-    }
-    while (true) {
-        $replaced = preg_replace('/(-?\d+)(\d\d\d)/', '$1,$2', $number);
-        if ($replaced != $number) {
-            $number = $replaced;
-        } else {
-            break;
+    function formatMoney($number, $fractional = false)
+    {
+        if ($fractional) {
+            $number = sprintf('%.2f', $number);
         }
+        while (true) {
+            $replaced = preg_replace('/(-?\d+)(\d\d\d)/', '$1,$2', $number);
+            if ($replaced != $number) {
+                $number = $replaced;
+            } else {
+                break;
+            }
+        }
+        return $number;
     }
-    return $number;
-}
 
-//Get last insertedID 
-$sql = $db->prepare("SELECT max(invoice_number) FROM sales");
-$sql->execute();
-$row = $sql->fetchColumn();
+    /**
+     * Get last inserted id
+     */
+    
+    $sql = $db->prepare("SELECT max(invoice_number) FROM sales");
+    $sql->execute();
+    $row = $sql->fetchColumn();
 
-// Get the invoice no.
-$sql1 = $db->prepare("SELECT `name`,balance FROM sales WHERE invoice_number ='$row'");
-$sql1->execute();
-$row1 = $sql1->fetch();
+    /**
+     * Get customer name 
+     */
 
+    $sql1 = $db->prepare("SELECT `name`,balance FROM sales WHERE invoice_number ='$row'");
+    $sql1->execute();
+    $row1 = $sql1->fetch();
+    $cname = $row1['name'];
+
+    if(!isset($cname) || $cname === null || $cname === '' ){
+        $customer_name = "------------";
+    }
+    else {
+        $customer_name = $cname;
+    }
 
 ?>
 <!DOCTYPE html>
@@ -73,18 +86,17 @@ $row1 = $sql1->fetch();
                 </b>
             </p>
         </center>
-
         <div class="tablediv" style="text-align:center;">
             <table class=" table table-condensed center" cellpadding="1px" cellspacing="4px"
                 style="width:auto; font-size:16px;">
                 <span>
                     <b style="margin-left:-120px">
-                        Customer: <?php echo $row1['name']; ?>
+                        Customer: <?php echo ucfirst($customer_name); ?>
                     </b>
                 </span>
                 <p style="margin-left:-20px; ">
                     <b>
-                        No#: <?php echo $row ?>
+                        No#: <?php echo $row; ?>
                         <span style="text-align:justify;margin-left:30px">
                             Date: <?php echo date('d/m/y H:i') ?>
                         </span>

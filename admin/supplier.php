@@ -130,10 +130,10 @@ window.onload = startclock;
 
                 <div style="margin-top: -19px; margin-bottom: 21px;">
                     <?php
-$result = $db->prepare("SELECT * FROM supliers ORDER BY suplier_id DESC");
-$result->execute();
-$rowcount = $result->rowcount();
-?>
+                        $result = $db->prepare("SELECT * FROM supliers ORDER BY suplier_id DESC");
+                        $result->execute();
+                        $rowcount = $result->rowcount();
+                    ?>
                     <div style="text-align:center;">
                         Total Number of Suppliers: <font color="green" style="font:bold 22px 'Aleo';">
                             <?php echo $rowcount; ?>
@@ -159,10 +159,10 @@ $rowcount = $result->rowcount();
                     <tbody>
 
                         <?php
-$result = $db->prepare("SELECT * FROM supliers ORDER BY suplier_id DESC");
-$result->execute();
-for ($i = 0; $row = $result->fetch(); $i++) {
-    ?>
+                            $result = $db->prepare("SELECT * FROM supliers ORDER BY suplier_id DESC");
+                            $result->execute();
+                            for ($i = 0; $row = $result->fetch(); $i++) {
+                         ?>
                         <tr class="record">
                             <td><?php echo $row['suplier_name']; ?></td>
                             <td><?php echo $row['contact_person']; ?></td>
@@ -179,10 +179,7 @@ for ($i = 0; $row = $result->fetch(); $i++) {
                                     title="Click To Delete"><i class="icon-trash" style="color:red;"></i> </a>
                             </td>
                         </tr>
-                        <?php
-}
-?>
-
+                        <?php }?>
                     </tbody>
                 </table>
                 <div class="clearfix"></div>

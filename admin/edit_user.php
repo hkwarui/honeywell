@@ -1,7 +1,7 @@
 <?php
-include '../admin/auth.php';
-
+include 'auth.php';
 include '../includes/db_connect.php';
+
 $id = $_GET['id'];
 $result = $db->prepare("SELECT * FROM user WHERE id= :userid");
 $result->bindParam(':userid', $id);

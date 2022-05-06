@@ -48,10 +48,11 @@
      */
 
     if ($d == 'cash_sales') {
-        $f = $_POST['cash_tendered'] - $e;
-        $sql = "INSERT INTO sales (invoice_number,cashier,`date`,`type`,amount,profit,balance,`name`) VALUES (:a,:b,:c,:d,:e,:z,:f,:g)";
+        $h = $_POST['cash_tendered'] ;
+        $f = $h - $e;
+       $sql = "INSERT INTO sales (invoice_number,cashier,`date`,`type`,amount,profit,balance,`name`,cash_tendered) VALUES (:a,:b,:c,:d,:e,:z,:f,:g,:h)";
         $q = $db->prepare($sql);
-        $q->execute(array(':a' => $a, ':b' => $b, ':c' => $c, ':d' => $d, ':e' => $e, ':z' => $z, ':f' => $f, ':g' => $cname));
+        $q->execute(array(':a' => $a, ':b' => $b, ':c' => $c, ':d' => $d, ':e' => $e, ':z' => $z, ':f' => $f, ':g' => $cname, ':h'=> $h));
         header("location: preview.php?invoice=$a");
         exit();
     }
@@ -61,17 +62,17 @@
      */
 
     if ($d == 'buy_goods_and_services'){
-        $sql = "INSERT INTO sales (invoice_number,cashier,`date`,`type`,amount,profit,due_date,`name`) VALUES (:a,:b,:c,:d,:e,:z,:f,:g)";
+        $sql = "INSERT INTO sales (invoice_number,cashier,`date`,`type`,amount,profit,`name`) VALUES (:a,:b,:c,:d,:e,:z,:g)";
         $q = $db->prepare($sql);
-        $q->execute(array(':a' => $a, ':b' => $b, ':c' => $c, ':d' => $d, ':e' => $e, ':z' => $z, ':f' => $f, ':g' => $cname));
+        $q->execute(array(':a' => $a, ':b' => $b, ':c' => $c, ':d' => $d, ':e' => $e, ':z' => $z, ':g' => $cname));
         header("location: preview.php?invoice=$a");
         exit();
     }
-
     if($d='equity_paybill'){
-        $sql = "INSERT INTO sales (invoice_number,cashier,`date`,`type`,amount,profit,due_date,`name`) VALUES (:a,:b,:c,:d,:e,:z,:f,:g)";
+        $sql = "INSERT INTO sales (invoice_number,cashier,`date`,`type`,amount,profit,`name`) VALUES (:a,:b,:c,:d,:e,:z,:g)";
         $q = $db->prepare($sql);
-        $q->execute(array(':a' => $a, ':b' => $b, ':c' => $c, ':d' => $d, ':e' => $e, ':z' => $z, ':f' => $f, ':g' => $cname));
+        $q->execute(array(':a' => $a, ':b' => $b, ':c' => $c, ':d' => $d, ':e' => $e, ':z' => $z,':g' => $cname));
         header("location: preview.php?invoice=$a");
         exit();
     }
+?>

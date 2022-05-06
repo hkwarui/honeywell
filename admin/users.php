@@ -66,10 +66,10 @@
 
                 <div style="margin-top: -19px; margin-bottom: 21px;">
                     <?php
-          $result = $db->prepare("SELECT * FROM user ORDER BY id DESC");
-          $result->execute();
-          $rowcount = $result->rowcount();
-          ?>
+                        $result = $db->prepare("SELECT * FROM user ORDER BY id DESC");
+                        $result->execute();
+                        $rowcount = $result->rowcount();
+                     ?>
                     <div style="text-align:center;">
                         Total Number of Users: <font color="green" style="font:bold 22px 'Aleo';">
                             <?php echo $rowcount; ?></font>
@@ -80,9 +80,13 @@
                 <a href="password.php"><button class="btn btn-info" style="margin-left: 10px; height:35px;"><i
                             class="icon-key icon-large"></i>My
                         pssword</button></a>
-                <a rel="facebox" href="add_user.php"><Button type="submit" class="btn btn-info"
+                <a rel="facebox" href="add_user.php">
+                    <Button type="submit" class="btn btn-info"
                         style="float:right; width:150px; height:35px;"><i class="icon-plus-sign icon-large"></i> Add
-                        Users</button></a><br><br>
+                        Users
+                    </button>
+                </a>
+                <br><br>
 
                 <table class="table table-bordered" id="resultTable" data-responsive="table" style="text-align: left;">
                     <thead>

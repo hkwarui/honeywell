@@ -1,12 +1,10 @@
 <?php
-require_once '../admin/auth.php';
-require_once '../includes/db_connect.php';
+  require_once '../admin/auth.php';
+  require_once '../includes/db_connect.php';
 
- $supplier_id  = $_GET['id'];
- $supplier_name  = $_GET['name'];
-
+  $supplier_id  = $_GET['id'];
+  $supplier_name = $_GET['name'];
                  //Function  to format currency
-
                     function formatMoney($number, $fractional = false)
                         {
                             if ($fractional) {
@@ -63,31 +61,6 @@ $result->execute([$supplier_id]);
   })
   </script>
 </head>
-<?php
-function createRandomPassword()
-{
-    $chars = "003232303232023232023456789";
-    srand((double) microtime() * 1000000);
-    $i = 0;
-    $pass = '';
-    while ($i <= 7) {
-
-        $num = rand() % 33;
-
-        $tmp = substr($chars, $num, 1);
-
-        $pass = $pass . $tmp;
-
-        $i++;
-
-    }
-    return $pass;
-}
-$finalcode = 'RS-' . createRandomPassword();
-?>
-
-
-
 <script language="javascript" type="text/javascript">
 /* Visit http://www.yaldex.com/ for full source code
 and get more free JavaScript, CSS and DHTML scripts! */
@@ -210,7 +183,7 @@ window.onload = startclock;
               <td><?php echo ($row['status'] == 'paid' ? '<span style="color:green">PAID</span>' : '<span style="color:red">PENDING</span>'); ?></td>
               <td><?php echo $row['note']; ?></td>
               <td>
-                <a rel="facebox" href="editSupplierDetails.php?id=<?php echo $row['id']; ?>"><i
+                <a rel="facebox" href="editSupplierDetails.php?delivery_id=<?php echo $row['id']; ?>&supplier_id=<?php echo $suplier_id; ?>"><i
                     class="icon-edit" title="Click to Edit" style="color:blue;"></i></a>
                 <a href="#" id="<?php echo $row['suplier_id']; ?>" class="delbutton"
                   title="Click To Delete"><i class="icon-trash" style="color:red;"></i> </a> 

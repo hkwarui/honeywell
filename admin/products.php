@@ -3,6 +3,22 @@
     require_once '../includes/db_connect.php';
     require_once '../includes/receiptNumber.php';
 
+    // format money 
+    function formatMoney($number, $fractional = false)
+    {
+        if ($fractional) {
+            $number = sprintf('%.2f', $number);
+        }
+        while (true) {
+            $replaced = preg_replace('/(-?\d+)(\d\d\d)/', '$1,$2', $number);
+            if ($replaced != $number) {
+                $number = $replaced;
+            } else {
+                break;
+            }
+        }
+        return $number;
+    }
 ?>
 <html>
 
@@ -14,6 +30,7 @@
     ?>
     <script src="../static/js/application.js"></script>
     <script>
+
     function sum() {
         var txtFirstNumberValue = document.getElementById('txt1').value;
         var txtSecondNumberValue = document.getElementById('txt2').value;
@@ -22,21 +39,17 @@
             document.getElementById('txt3').value = result;
 
         }
-
         var txtFirstNumberValue = document.getElementById('txt11').value;
         var result = parseInt(txtFirstNumberValue);
         if (!isNaN(result)) {
             document.getElementById('txt22').value = result;
         }
-
         var txtFirstNumberValue = document.getElementById('txt11').value;
         var txtSecondNumberValue = document.getElementById('txt33').value;
         var result = parseInt(txtFirstNumberValue) + parseInt(txtSecondNumberValue);
         if (!isNaN(result)) {
             document.getElementById('txt55').value = result;
-
         }
-
         var txtFirstNumberValue = document.getElementById('txt4').value;
         var result = parseInt(txtFirstNumberValue);
         if (!isNaN(result)) {
@@ -138,22 +151,7 @@
                     </thead>
                     <tbody>
                         <?php
-                        function formatMoney($number, $fractional = false)
-                        {
-                            if ($fractional) {
-                                $number = sprintf('%.2f', $number);
-                            }
-                            while (true) {
-                                $replaced = preg_replace('/(-?\d+)(\d\d\d)/', '$1,$2', $number);
-                                if ($replaced != $number) {
-                                    $number = $replaced;
-                                } else {
-                                    break;
-                                }
-                            }
-                            return $number;
-                        }
-                        
+                                            
                         $result = $db->prepare("SELECT *, price * qty as total FROM products ORDER BY product_name");
                         $result->execute();
 
@@ -197,19 +195,22 @@
                         </tr>
                         <?php
                         }
-                    
-                        for ($i = 0; $row = $result->fetch(); $i++) {
-                               $dsdsd = $row['total'];
-                               echo formatMoney($dsdsd, true); 
-                               } 
-                        ?>
+                            for ($i = 0; $row = $result->fetch(); $i++) 
+                            {
+                                $dsdsd = $row['total'];
+                                echo formatMoney($dsdsd, true); 
+                            } 
+
+                       ?>
                     </tbody>
                     <thead>
                         <tr>
                             <th colspan="6" style="border-top:1px solid #999999"> Total: </th>
                             <th colspan="1" style="border-top:1px solid #999999"><b>Ksh.
                                     <?php echo formatMoney($total_value,true);?>
-                                </b> </th>
+                                </b>
+                            </th>
+                            <th colspan="1" style="border-top:1px solid #999999"></th>
                         </tr>
                     </thead>
                 </table>

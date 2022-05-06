@@ -114,6 +114,7 @@
         $cash = $row['due_date'];
         $cashier = $row['cashier'];
         $balance = $row['balance'];
+        $cash_tendered =$row['cash_tendered'];
 
         $pt = $row['type'];
         $am = $row['amount'];
@@ -122,7 +123,12 @@
             $amount = (int) $cash - (int) $am;
         }
     }   
-         $customer_name = isset($cname) ? $cname : "------------";
+         if(!isset($cname) || $cname === null || $cname === '' ){
+            $customer_name = "------------";
+         }
+         else {
+            $customer_name = $cname;
+         }
     ?>
 
 
@@ -162,6 +168,7 @@ and get more free JavaScript, CSS and DHTML scripts! */
     window.onload = startclock;
     // End -->
     </SCRIPT>
+</head>
 
 <body>
     <?php include '../includes/navfixed.php'; ?>
@@ -302,7 +309,7 @@ and get more free JavaScript, CSS and DHTML scripts! */
                                         <td colspan="2">
                                             <strong style="font-size: 12px; color: #222222;">
                                                 <?php
-                                                    echo formatMoney($cash, true);
+                                                    echo formatMoney($cash_tendered, true);
                                                 ?>
                                             </strong>
                                         </td>
@@ -340,3 +347,44 @@ and get more free JavaScript, CSS and DHTML scripts! */
             </div>
         </div>
     </div>
+
+    <script src="../static/js/jquery.js"></script>
+    <script type="text/javascript">
+    $(function() {
+        $(".delbutton").click(function() {
+            //Save the link in a variable called element
+            var element = $(this);
+            //Find the id of the link that was clicked
+            var del_id = element.attr("id");
+            //Built a url to send
+            var info = 'id=' + del_id;
+            if (confirm("Sure you want to delete this Product? There is NO undo!")) {
+                $.ajax({
+                    type: "post",
+                    url: "deleteproduct.php",
+                    data: info,
+                    success: function(data) {
+                        if (data == 1) {
+                            location.reload()
+                        }
+                    }
+                });
+                $(this).parents(".record").animate({
+                        backgroundColor: "#fbc7c7"
+                    }, "fast")
+                    .animate({
+                        opacity: "hide"
+                    }, "slow");
+
+            }
+
+            return false;
+
+        });
+
+    });
+    </script>
+    <?php include '../includes/footer.php'; ?>
+</body>
+
+</html>
