@@ -1,10 +1,7 @@
 <?php
-include '../admin/auth.php';
-
-include '../includes/db_connect.php';
-
+  include 'auth.php';
+  include '../includes/db_connect.php';
 ?>
-
 
 <html>
 

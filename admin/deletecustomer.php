@@ -1,6 +1,5 @@
 <?php
-require_once '../admin/auth.php';
-
+require_once 'auth.php';
 include '../includes/db_connect.php';
 $id = $_POST['id'];
 $result = $db->prepare("DELETE FROM customer WHERE id_number= :memid");

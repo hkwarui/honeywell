@@ -1,5 +1,5 @@
 <?php
-require_once '../admin/auth.php';
+require_once 'auth.php';
 
 include '../includes/db_connect.php';
 

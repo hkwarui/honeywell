@@ -1,5 +1,5 @@
 <?php
-  include '../admin/auth.php';
+  include 'auth.php';
   $delivery_id =  $_GET['id'];
 ?>
 

@@ -1,6 +1,6 @@
 
 <?php
-include '../admin/auth.php';
+include 'auth.php';
 
 ?>
 

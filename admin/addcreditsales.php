@@ -1,6 +1,6 @@
 
 <?php
-include '../admin/auth.php';
+include 'auth.php';
 include '../includes/db_connect.php';
 
 $result = $db->prepare("SELECT id_number FROM customer ORDER BY customer_name ASC");

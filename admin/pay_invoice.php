@@ -1,5 +1,5 @@
 <?php
-require_once '../admin/auth.php';
+require_once 'auth.php';
 require_once '../includes/db_connect.php';
 
 $a = $_POST['invoice'];

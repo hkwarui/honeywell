@@ -1,6 +1,5 @@
 <?php
-include '../admin/auth.php';
-
+include '/auth.php';
 include '../includes/db_connect.php';
 ?>
 

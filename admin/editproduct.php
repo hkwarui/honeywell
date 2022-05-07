@@ -1,6 +1,5 @@
 <?php
 require_once 'auth.php';
-
 include '../includes/db_connect.php';
 $id = $_GET['id'];
 $result = $db->prepare("SELECT * FROM products WHERE product_id= :userid");

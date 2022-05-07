@@ -1,6 +1,5 @@
 <?php
-include '../admin/auth.php';
-
+include 'auth.php';
 include '../includes/db_connect.php';
 $date = date('Y-m-d', strtotime($_POST['delivery_date']));
 $a = $_POST['sup_id'];

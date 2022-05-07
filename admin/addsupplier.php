@@ -1,5 +1,5 @@
 <?php
-include '../admin/auth.php';
+include 'auth.php';
 ?>
 
 <link href="../style.css" media="screen" rel="stylesheet" type="text/css" />

@@ -1,6 +1,5 @@
 <?php
 require_once 'auth.php';
-
 include '../includes/db_connect.php';
 $a = $_POST['invoice'];
 $b = $_POST['product'];
