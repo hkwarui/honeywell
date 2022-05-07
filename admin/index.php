@@ -33,13 +33,37 @@ $result9->execute();
 $num_rows9 = $result9->fetchColumn();
 
 //Sum sales today
-$result5 = $db->prepare("SELECT SUM(amount) AS tot_amount FROM sales_order WHERE `date`= CURDATE()");
+$result5 = $db->prepare("SELECT SUM(amount) AS tot_amount FROM sales WHERE `date`= CURDATE()");
 $result5->execute();
 $num_rows5 = $result5->fetchColumn();
 $tot_amount = formatMoney($num_rows5, true);
 
+// Todays credit sales 
+$res_credit_sales = $db->prepare("SELECT SUM(amount) AS tot_amount FROM sales WHERE `date`= CURDATE() AND `type`='credit_sales'");
+$res_credit_sales->execute();
+$tot = $res_credit_sales->fetchColumn();
+$tot_credit_sales  = formatMoney($tot, true);
+
+// Todays cash sales 
+$res_cash_sales = $db->prepare("SELECT SUM(amount) AS tot_amount FROM sales WHERE `date`= CURDATE() AND `type`='cash_sales'");
+$res_cash_sales->execute();
+$tot_cash = $res_cash_sales->fetchColumn();
+$tot_cash_sales  = formatMoney($tot_cash, true);
+
+// Todays buy_goods_and_services sales 
+$res_bgas_sales = $db->prepare("SELECT SUM(amount) AS tot_amount FROM sales WHERE `date`= CURDATE() AND `type`='buy_goods_and_services'");
+$res_bgas_sales->execute();
+$tot_bgas = $res_bgas_sales->fetchColumn();
+$tot_bgas_sales  = formatMoney($tot_bgas, true);
+
+// Todays equity_paybill sales 
+$res_equity_paybill_sales = $db->prepare("SELECT SUM(amount) AS tot_amount FROM sales WHERE `date`= CURDATE() AND `type`='equity_paybill'");
+$res_equity_paybill_sales->execute();
+$tot_equity = $res_equity_paybill_sales->fetchColumn();
+$tot_equity_paybill_sales  = formatMoney($tot_equity, true);
+
 //Sum sales this month
-$result10 = $db->prepare("SELECT SUM(amount) AS tot_amount FROM sales_order WHERE MONTH(`date`) = MONTH(CURDATE()) AND YEAR(`date`) = YEAR(CURDATE())");
+$result10 = $db->prepare("SELECT SUM(amount) AS tot_amount FROM sales WHERE MONTH(`date`) = MONTH(CURDATE()) AND YEAR(`date`) = YEAR(CURDATE())");
 $result10->execute();
 $num_rows10 = $result10->fetchColumn();
 $tot_amount3 = formatMoney($num_rows10, true);
@@ -61,7 +85,7 @@ $result7 = $db->prepare("SELECT product_name, SUM(qty) AS out_of_stock FROM prod
 $result7->execute();
 
 //Sales per day for last 7 days
-$result11 = $db->prepare("SELECT SUM(amount) AS amount, SUM(profit) as profit, `date` FROM sales_order WHERE `date` > CURDATE() - interval 1 week GROUP BY `date` ORDER BY `date` DESC LIMIT 7");
+$result11 = $db->prepare("SELECT SUM(amount) AS amount, SUM(profit) as profit, `date` FROM sales WHERE `date` > CURDATE() - interval 1 week GROUP BY `date` ORDER BY `date` DESC LIMIT 7");
 $result11->execute();
 
 // $db->close();
@@ -140,15 +164,35 @@ $result11->execute();
                 </div>
                 <div id="mainmain">
 
-                    <a href="salesreport.php?d1=0&d2=0"><i class="icon-shopping-cart icon-2x"
-                            style="color:#ffbf00"></i><br>
+                    <a href="salesreport.php?d1=0&d2=0"><i class="icon-money icon-2x"
+                            style="color:green"></i><br>
+                        <span class="c"> <b> Ksh. <?php echo $tot_cash_sales; ?> </b> </span><br> <span
+                            class='badge badge-success'>CASH SALES</span>
+                    </a>
+                    <a href="salesreport.php?d1=0&d2=0"><i class="icon-mobile-phone icon-2x"
+                            style="color:green"></i><br>
+                        <span class="c"> <b> Ksh. <?php echo $tot_bgas_sales; ?> </b> </span><br> <span
+                            class='badge badge-success'>M-PESA Till SALES</span>
+                    </a>
+                    <a href="salesreport.php?d1=0&d2=0"><i class="icon-mobile-phone icon-2x"
+                            style="color:#900C3F"></i><br>
+                        <span class="c"> <b> Ksh. <?php echo $tot_equity_paybill_sales; ?> </b> </span><br> <span
+                            class='badge badge-success'>EQUITY PAYBILL</span>
+                    </a>
+                    <a href="salesreport.php?d1=0&d2=0"><i class="icon-credit-card icon-2x"
+                            style="color:red"></i><br>
+                        <span class="c"> <b> Ksh. <?php echo $tot_credit_sales; ?> </b> </span><br> <span
+                            class='badge badge-success'>CREDIT SALES</span>
+                    </a>
+                    <a href="salesreport.php?d1=0&d2=0"><i class="icon-money icon-2x"
+                            style="color:grey;"></i><br>
                         <span class="c"> <b> Ksh. <?php echo $tot_amount; ?> </b> </span><br> <span
-                            class='badge badge-success'>TODAYS SALES</span>
+                            class='badge badge-success'>TODAYS TOTAL SALES</span>
                     </a>
 
-                    <a href="salesreport.php?d1=0&d2=0"><i class="icon-list-alt icon-2x" style="color:green"></i><br>
+                    <a href="salesreport.php?d1=0&d2=0"><i class="icon-money icon-2x" style="color:green"></i><br>
                         <b> Ksh. <?php echo $tot_amount1; ?> </b><br>
-                        <span class='badge badge-success'>TODAYS PROFIT</span>
+                        <span class='badge badge-success'>TODAYS TOTAL PROFIT</span>
                     </a>
 
                     <a href="salesreport.php?d1=0&d2=0"><i class="icon-bar-chart icon-2x" style="color:#2B313D"></i><br>
@@ -168,12 +212,12 @@ $result11->execute();
                             <?php echo strtoupper(date('F')); ?> PROFITS</span>
                     </a>
 
-                    <a href="salesreport.php?d1=0&d2=0"><i class="icon-bar-chart icon-2x" style="color:red"></i><br>
+                    <!-- <a href="salesreport.php?d1=0&d2=0"><i class="icon-bar-chart icon-2x" style="color:red"></i><br>
                         <b><?php echo $num_rows9 ?> </b><br>
                         <span class='badge badge-success'>
                             <?php echo strtoupper(date('F')); ?> TRANSACTIONS</span>
-                    </a>
-                    <div class="clearfix"></div>
+                    </a> -->
+                    <div class="clearfix"></div> 
                 </div>
 
                 <div>

@@ -25,7 +25,7 @@ for ($i = 0; $row = $result->fetch(); $i++) {
 <span>Status : </span><select  name="stat" style="width:260px; height:30px;">
 <option value="<?php echo $row['stat']; ?>"> <?php echo ($row['stat'] == 0) ? "Disabled" : "Active"; ?> </option>
 <option value=1> Active</option> <option value=0>Disable</option>
-</select><br>
+</select><br>   55
 <span>Start Date: </span><input type="date" style="width:260px; height:30px;" name="date" value="<?php echo $row['date']; ?>" placeholder="Date"/><br>
 <div style="float:right; margin-right:10px;">
 <button class="btn btn-success btn-block btn-large" style="width:267px;"><i class="icon icon-save icon-large"></i>Update</button>

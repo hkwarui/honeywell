@@ -15,8 +15,6 @@
     $z = $_POST['profit'];
     $cname = $_POST['cname'];
 
-    echo $cname;
-
     /**
      * Credit sale checkout 
      */

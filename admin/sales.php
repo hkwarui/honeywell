@@ -95,7 +95,7 @@
 <body>
            
  <?php include '../includes/navfixed.php'; ?>
-  <div class = "container-fluid" >
+  <div class ="container-fluid" >
             <div class = "row-fluid">
             <div class = "span2">
             <div class = "well sidebar-nav">
@@ -147,8 +147,7 @@
                 <i class = "icon-group icon-2x" style ="color:red" > </i> 
                 Users
             </a> 
-        </li> 
-                <li> 
+        </li>     <li> 
                     <a href ="password.php"> 
                         <i class ="icon-key icon-2x" style ="color:red" > </i> 
                         My Password
@@ -274,23 +273,8 @@
                                     echo formatMoney($fgfg, true);
                                 }
                             ?> </td>
-                    <td></td>
-                    <td style="display: none;">
-                        <?php
-                            //Total Profit
-                            $resultcr = $db->prepare("SELECT sum(profit) FROM sales_order WHERE invoice= :a");
-                            $resultcr->bindParam(':a', $sdsd);
-                            $resultcr->execute();
-
-                            for ($i = 0; $rows = $resultcr->fetch(); $i++) {
-                                $asd = $rows['sum(profit)'];
-                                echo $asd;
-                            }
-                        ?>
-                        </strong>
-                    </td>
-                    <th></th>
-                </tr>
+                    <td   colspan="1" style="font-size: 12px; color: #222222;"></td>
+              </tr>
             </tbody>
         </table>
         <br>
