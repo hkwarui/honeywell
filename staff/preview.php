@@ -1,7 +1,26 @@
 <?php
-include '../admin/auth.php';
-include '../includes/db_connect.php';
-?>
+    require_once  'auth.php';
+    require_once '../includes/db_connect.php';
+    require_once '../includes/receiptNumber.php';
+
+    /**
+     * Function to format currency
+     */
+    
+    function formatMoney($number, $fractional = false)
+    {
+        if ($fractional) { $number = sprintf('%.2f', $number);  }
+
+        while (true) {
+            $replaced = preg_replace('/(-?\d+)(\d\d\d)/', '$1,$2', $number);
+            if ($replaced != $number) { $number = $replaced; } 
+            else {  break; }
+        }
+        
+        return $number; 
+    }
+
+    ?>
 
 
 <!DOCTYPE html>
@@ -94,6 +113,8 @@ include '../includes/db_connect.php';
         $date = $row['date'];
         $cash = $row['due_date'];
         $cashier = $row['cashier'];
+        $balance = $row['balance'];
+        $cash_tendered =$row['cash_tendered'];
 
         $pt = $row['type'];
         $am = $row['amount'];
@@ -101,31 +122,16 @@ include '../includes/db_connect.php';
             $cash = $row['due_date'];
             $amount = (int) $cash - (int) $am;
         }
-    }
+    }   
+         if(!isset($cname) || $cname === null || $cname === '' ){
+            $customer_name = "------------";
+         }
+         else {
+            $customer_name = $cname;
+         }
     ?>
 
 
-    <?php
-    function createRandomPassword()
-    {
-        $chars = "003232303232023232023456789";
-        srand((float) microtime() * 1000000);
-        $i = 0;
-        $pass = '';
-        while ($i <= 7) {
-
-            $num = rand() % 33;
-
-            $tmp = substr($chars, $num, 1);
-
-            $pass = $pass . $tmp;
-
-            $i++;
-        }
-        return $pass;
-    }
-    $finalcode = 'RS-' . createRandomPassword();
-    ?>
 
     <script language="javascript" type="text/javascript">
     /* Visit http://www.yaldex.com/ for full source code
@@ -162,6 +168,7 @@ and get more free JavaScript, CSS and DHTML scripts! */
     window.onload = startclock;
     // End -->
     </SCRIPT>
+</head>
 
 <body>
     <?php include '../includes/navfixed.php'; ?>
@@ -174,7 +181,7 @@ and get more free JavaScript, CSS and DHTML scripts! */
                         <li><a href="../admin"><i class="icon-dashboard icon-2x" style="color:#29D87E"></i> Dashboard
                             </a>
                         </li>
-                        <li class="active"><a href="sales.php?id=cash&invoice=<?php echo $finalcode ?>"><i
+                        <li class="active"><a href="sales.php?id=cash&invoice=<?php echo $invoiceNumber; ?>"><i
                                     class="icon-shopping-cart icon-2x" style="color:#DB691C"></i>
                                 Sales</a> </li>
                         <li><a href=" products.php"><i class="icon-list-alt icon-2x" style="color:blue"></i>Products</a>
@@ -200,33 +207,40 @@ and get more free JavaScript, CSS and DHTML scripts! */
             <!--/span-->
 
             <div class="span10">
-                <a href="sales.php?id=cash&invoice=<?php echo $finalcode ?>"><button class="btn btn-default"><i
+                <a href="sales.php?id=cash&invoice=<?php echo $invoiceNumber ?>"><button class="btn btn-default"><i
                             class="icon-arrow-left"></i> Back to Sales</button></a>
                 <div class="content" id="content">
                     <div style="margin: 0 auto; padding: 20px; width: 400px; font-weight: normal;">
                         <div style="width: 100%; height: 190px;">
                             <div style="float: left;">
                                 <center>
-                                    <div style="width:400px; font:bold 20px 'Aleo';">KIKI EMPIRE OUTLETS 2</div>
-                                    Wholesale & Retail <br> Tel:0722679288 <br><br>
+                                    <div style="font:bold 14px 'Aleo'">
+                                        <div style="width:400px; ;">HONEYWELL LIQOUR STORE 1</div>
+                                        Wholesale & Retail <br> Tel:0722679288 <br><br>
+                                    </div>
                                 </center>
                                 <div>
                                 </div>
                             </div>
                             <div style="float: left;">
                                 <table cellpadding="5" cellspacing="0"
-                                    style="font-family: arial; font-size: nnnnn12px; width: 100%;">
-
-                                    <tr>
-                                        <td>RCT :<?php echo $invoice ?></td>
-                                        <td>Date :<?php echo date("d/m/y  H:i") ?></td>
+                                    style="font-family: arial; font-size:12px; width: 100%;">
+                                    <tr style="text-align:left;">
+                                        <td>NO#:<?php echo $invoice ?></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td>Customer: <?php echo $customer_name
+                                        ; ?></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td style="float:right">Date :<?php echo date("d/m/y  H:i") ?></td>
                                     </tr>
                                 </table>
 
                             </div>
                             <div class="clearfix"></div>
                         </div>
-                        <div style="width: 100%; margin-top:-70px;">
+                        <div style="width: 100%; margin-top:-100px;">
                             <table border="1" cellpadding="4" cellspacing="0"
                                 style="font-family: arial; font-size: 12px;	text-align:left;" width="100%">
                                 <thead>
@@ -283,65 +297,45 @@ and get more free JavaScript, CSS and DHTML scripts! */
                                                 ?>
                                             </strong></td>
                                     </tr>
-                                    <?php if ($pt == 'cash') {
+                                    <?php  
+                                        if(isset($pt) && $pt =='cash_sales'){
                                     ?>
                                     <tr>
-                                        <td colspan="3" style=" text-align:right;"><strong
-                                                style="font-size: 12px; color: #222222;">Cash
-                                                Tendered:&nbsp;</strong></td>
-                                        <td colspan="2"><strong style="font-size: 12px; color: #222222;">
+                                        <td colspan="3" style=" text-align:right;">
+                                            <strong style="font-size: 12px; color: #222222;">Cash
+                                                Tendered:&nbsp;
+                                            </strong>
+                                        </td>
+                                        <td colspan="2">
+                                            <strong style="font-size: 12px; color: #222222;">
                                                 <?php
-                                                    echo formatMoney($cash, true);
-                                                    ?>
-                                            </strong></td>
+                                                    echo formatMoney($cash_tendered, true);
+                                                ?>
+                                            </strong>
+                                        </td>
                                     </tr>
-                                    <?php
-                                    }
-                                    ?>
                                     <tr>
                                         <td colspan="3" style=" text-align:right;"><strong
                                                 style="font-size: 12px; color: #222222;">
                                                 <font style="font-size:14px;">
                                                     <?php
-                                                    if ($pt == 'cash') {
-                                                        echo 'Change:';
-                                                    }
-                                                    if ($pt == 'credit') {
-                                                        echo 'Due Date:';
-                                                    }
+                                                        echo 'Change:';                                                   
                                                     ?>&nbsp;
                                             </strong></td>
                                         <td colspan="2"><strong style="font-size: 14px; color: #222222;">
                                                 <?php
-                                                function formatMoney($number, $fractional = false)
-                                                {
-                                                    if ($fractional) {
-                                                        $number = sprintf('%.2f', $number);
-                                                    }
-                                                    while (true) {
-                                                        $replaced = preg_replace('/(-?\d+)(\d\d\d)/', '$1,$2', $number);
-                                                        if ($replaced != $number) {
-                                                            $number = $replaced;
-                                                        } else {
-                                                            break;
-                                                        }
-                                                    }
-                                                    return $number;
-                                                }
-                                                if ($pt == 'credit') {
-                                                    echo $cash;
-                                                }
-                                                if ($pt == 'cash') {
-                                                    echo formatMoney($amount, true);
-                                                }
+                                                   echo formatMoney($balance, true);
                                                 ?>
                                         </td>
                                     </tr>
-
+                                    <?php } ?>
                                 </tbody>
                             </table>
                             <center style="font-size:12px">
-                                <div>Good onces sold are not refundable </div>
+                                    <p>Goods onces sold are not refundable</p>
+                                    Equity Paybill: 110337
+                                    M-pesa till:5209399 
+                                </p>
                             </center>
 
                         </div>
@@ -356,3 +350,44 @@ and get more free JavaScript, CSS and DHTML scripts! */
             </div>
         </div>
     </div>
+
+    <script src="../static/js/jquery.js"></script>
+    <script type="text/javascript">
+    $(function() {
+        $(".delbutton").click(function() {
+            //Save the link in a variable called element
+            var element = $(this);
+            //Find the id of the link that was clicked
+            var del_id = element.attr("id");
+            //Built a url to send
+            var info = 'id=' + del_id;
+            if (confirm("Sure you want to delete this Product? There is NO undo!")) {
+                $.ajax({
+                    type: "post",
+                    url: "deleteproduct.php",
+                    data: info,
+                    success: function(data) {
+                        if (data == 1) {
+                            location.reload()
+                        }
+                    }
+                });
+                $(this).parents(".record").animate({
+                        backgroundColor: "#fbc7c7"
+                    }, "fast")
+                    .animate({
+                        opacity: "hide"
+                    }, "slow");
+
+            }
+
+            return false;
+
+        });
+
+    });
+    </script>
+    <?php include '../includes/footer.php'; ?>
+</body>
+
+</html>

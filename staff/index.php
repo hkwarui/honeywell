@@ -1,6 +1,53 @@
 <?php
 include 'auth.php';
 include '../includes/receiptNumber.php';
+
+
+//Sum sales today
+$result5 = $db->prepare("SELECT SUM(amount) AS tot_amount FROM sales WHERE `date`= CURDATE() AND cashier=?");
+$result5->execute([$username]);
+$num_rows5 = $result5->fetchColumn();
+$tot_amount = formatMoney($num_rows5, true);
+
+// Todays credit sales 
+$res_credit_sales = $db->prepare("SELECT SUM(amount) AS tot_amount FROM sales WHERE `date`= CURDATE() AND `type`='credit_sales' AND cashier=?");
+$res_credit_sales->execute([$username]);
+$tot = $res_credit_sales->fetchColumn();
+$tot_credit_sales  = formatMoney($tot, true);
+
+// Todays cash sales 
+$res_cash_sales = $db->prepare("SELECT SUM(amount) AS tot_amount FROM sales WHERE `date`= CURDATE() AND `type`='cash_sales' AND cashier=?");
+$res_cash_sales->execute([$username]);
+$tot_cash = $res_cash_sales->fetchColumn();
+$tot_cash_sales  = formatMoney($tot_cash, true);
+
+// Todays buy_goods_and_services sales 
+$res_bgas_sales = $db->prepare("SELECT SUM(amount) AS tot_amount FROM sales WHERE `date`= CURDATE() AND `type`='buy_goods_and_services' AND cashier=?");
+$res_bgas_sales->execute([$username]);
+$tot_bgas = $res_bgas_sales->fetchColumn();
+$tot_bgas_sales  = formatMoney($tot_bgas, true);
+
+// Todays equity_paybill sales 
+$res_equity_paybill_sales = $db->prepare("SELECT SUM(amount) AS tot_amount FROM sales WHERE `date`= CURDATE() AND `type`='equity_paybill' AND cashier=?");
+$res_equity_paybill_sales->execute([$username]);
+$tot_equity = $res_equity_paybill_sales->fetchColumn();
+$tot_equity_paybill_sales  = formatMoney($tot_equity, true);
+
+function formatMoney($number, $fractional = false)
+{
+    if ($fractional) {
+        $number = sprintf('%.2f', $number);
+    }
+    while (true) {
+        $replaced = preg_replace('/(-?\d+)(\d\d\d)/', '$1,$2', $number);
+        if ($replaced != $number) {
+            $number = $replaced;
+        } else {
+            break;
+        }
+    }
+    return $number;
+}
 ?>
 
 <!DOCTYPE html>
@@ -56,24 +103,42 @@ include '../includes/receiptNumber.php';
                     <i class="icon-dashboard" style="color:#29D87E"></i> Dashboard
                 </div>
                 <ul class="breadcrumb">
-                    <li class="active"></li>
+                    <li class="active">
+                 
+                    </li>
                 </ul>
                 <div id="mainmain">
-                    <a href="sales.php?id=cash&invoice=<?php echo $invoiceNumber; ?>"><i
-                            class="icon-shopping-cart icon-2x" style="color:#DB691C"></i><br>
-                        Sales</a>
-                    <a href="products.php"><i class="icon-list-alt icon-2x" style="color:blue"></i><br> Products</a>
-                    <a href="customer.php"><i class="icon-group icon-2x" style="color:green"></i><br> Customers</a>
-                    <a href="credits.php"><i class="icon-money icon-2x" style="color:#ffbf00"></i><br> Credits</a>
-                    <a href="salesreport.php?d1=0&d2=0"><i class="icon-bar-chart icon-2x" style="color:#2B313D"></i><br>
-                        Sales
-                        Report</a>
-                    <a href="sales_inventory.php">
-                        <font color="red"><i class="icon-shopping-cart icon-2x"></i></font><br> Sales Inventory
+
+                <a href="#"><i class="icon-money icon-2x"
+                            style="color:green"></i><br>
+                        <span class="c"> <b> Ksh. <?php echo $tot_cash_sales; ?> </b> </span><br> <span
+                            class='badge badge-success'>CASH SALES</span>
                     </a>
-                    <?php
-          ?>
-                    <div class="clearfix"></div>
+                    <a href="#"><i class="icon-mobile-phone icon-2x"
+                            style="color:green"></i><br>
+                        <span class="c"> <b> Ksh. <?php echo $tot_bgas_sales; ?> </b> </span><br> <span
+                            class='badge badge-success'>M-PESA Till SALES</span>
+                    </a>
+                    <a href="#"><i class="icon-mobile-phone icon-2x"
+                            style="color:#900C3F"></i><br>
+                        <span class="c"> <b> Ksh. <?php echo $tot_equity_paybill_sales; ?> </b> </span><br> <span
+                            class='badge badge-success'>EQUITY PAYBILL</span>
+                    </a>
+                    <a href="#"><i class="icon-credit-card icon-2x"
+                            style="color:red"></i><br>
+                        <span class="c"> <b> Ksh. <?php echo $tot_credit_sales; ?> </b> </span><br> <span
+                            class='badge badge-success'>CREDIT SALES</span>
+                    </a>
+                    <a href="#"><i class="icon-money icon-2x"
+                            style="color:grey;"></i><br>
+                        <span class="c"> <b> Ksh. <?php echo $tot_amount; ?> </b> </span><br> <span
+                            class='badge badge-success'>TODAYS TOTAL SALES</span>
+                    </a>
+                      <a href="salesreport.php?d1=0&d2=0"><i class="icon-money icon-2x"
+                            style="color:grey;"></i><br>
+                       <span>Sales Report </span>
+                    </a>
+                 <div class="clearfix"></div>
                 </div>
             </div>
         </div>

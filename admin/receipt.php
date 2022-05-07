@@ -78,7 +78,7 @@
         <center>
             <p>
                 <b>
-                    KIKI EMPIRE OUTLETS 2
+            HONEYWELL LIQOUR STORE 1
                     </br>
                     Wholesale & Retail
                     </br>
@@ -152,6 +152,8 @@
         </div>
         <center>
             <p>Goods onces sold are not refundable</p>
+            Equity Paybill: 110337
+            M-pesa till:5209399 </p>
         </center>
     </div>
 </body>

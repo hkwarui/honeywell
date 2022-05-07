@@ -1,35 +1,51 @@
 <?php
-require_once "auth.php";
-include_once "../includes/db_connect.php";
-include_once "../includes/header.php";
+    require_once "auth.php";
+    include_once "../includes/db_connect.php";
+    include_once "../includes/header.php";
 
-//Format money function
-function formatMoney($number, $fractional = false)
-{
-    if ($fractional) {
-        $number = sprintf('%.2f', $number);
-    }
-    while (true) {
-        $replaced = preg_replace('/(-?\d+)(\d\d\d)/', '$1,$2', $number);
-        if ($replaced != $number) {
-            $number = $replaced;
-        } else {
-            break;
+    /**
+     * Format money function
+     */
+
+    function formatMoney($number, $fractional = false)
+    {
+        if ($fractional) {
+            $number = sprintf('%.2f', $number);
         }
+        while (true) {
+            $replaced = preg_replace('/(-?\d+)(\d\d\d)/', '$1,$2', $number);
+            if ($replaced != $number) {
+                $number = $replaced;
+            } else {
+                break;
+            }
+        }
+        return $number;
     }
-    return $number;
-}
 
-//Get last insertedID 
-$sql = $db->prepare("SELECT max(transaction_id) FROM sales_order");
-$sql->execute();
-$row = $sql->fetchColumn();
+    /**
+     * Get last inserted id
+     */
+    
+    $sql = $db->prepare("SELECT max(invoice_number) FROM sales");
+    $sql->execute();
+    $row = $sql->fetchColumn();
 
-//Get the invoice no.
-$sql1 = $db->prepare("SELECT invoice FROM sales_order WHERE transaction_id ='$row'");
-$sql1->execute();
-$row1 = $sql1->fetchColumn();
+    /**
+     * Get customer name 
+     */
 
+    $sql1 = $db->prepare("SELECT `name`,balance FROM sales WHERE invoice_number ='$row'");
+    $sql1->execute();
+    $row1 = $sql1->fetch();
+    $cname = $row1['name'];
+
+    if(!isset($cname) || $cname === null || $cname === '' ){
+        $customer_name = "------------";
+    }
+    else {
+        $customer_name = $cname;
+    }
 
 ?>
 <!DOCTYPE html>
@@ -60,46 +76,63 @@ $row1 = $sql1->fetchColumn();
     <div class="container" style="width:100%; font-size:12px">
 
         <center>
-            <p><b>HOUSE OF CANDY <br>Wholesale & Retail<br>Tel: 0722-697-288</b></p>
+            <p>
+                <b>
+            HONEYWELL LIQOUR STORE 1
+                    </br>
+                    Wholesale & Retail
+                    </br>
+                    Tel: 0722-679-288
+                </b>
+            </p>
         </center>
-        <div class="tablediv" style="text-align: center;">
+        <div class="tablediv" style="text-align:center;">
             <table class=" table table-condensed center" cellpadding="1px" cellspacing="4px"
-                style="width:auto; font-size:12px;">
-                <p>RCT: <?php echo $row1 ?> <span style="text-align: right;margin-left:3px"><b> </b>Date:
-                        <?php echo date('d/m/y H:i') ?>
-                    </span>
+                style="width:auto; font-size:16px;">
+                <span>
+                    <b style="margin-left:-120px">
+                        Customer: <?php echo ucfirst($customer_name); ?>
+                    </b>
+                </span>
+                <p style="margin-left:-20px; ">
+                    <b>
+                        No#: <?php echo $row; ?>
+                        <span style="text-align:justify;margin-left:30px">
+                            Date: <?php echo date('d/m/y H:i') ?>
+                        </span>
+                    </b>
                 </p>
                 <thead class="thead-dark">
                     <tr>
                         <th>#</th>
-                        <th>Items</th>
-                        <th>Qty</th>
-                        <th>Price</th>
-                        <th>Amount</th>
+                        <th>ITEM</th>
+                        <th>QTY</th>
+                        <th>PRICE</th>
+                        <th>AMOUNT</th>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody class="thead-dark">
                     <?php
                     $no = 1;
                     $result = $db->prepare("SELECT * FROM sales_order WHERE invoice= :userid");
-                    $result->bindParam(':userid', $row1);
+                    $result->bindParam(':userid', $row);
                     $result->execute();
                     while ($row2 = $result->fetch()) {
                     ?>
                     <tr>
                         <td><?php echo $no++ ?></td>
-                        <td><?php echo ucwords($row2['product_name']) ?></td>
+                        <td><small><?php echo ucwords($row2['product_name']) ?></small></td>
                         <td><?php echo $row2['qty'] ?></td>
                         <td><?php echo formatMoney($row2['price'], true) ?></td>
                         <td><?php echo formatMoney($row2['amount'], true) ?></td>
                     </tr>
                     <?php } ?>
                     <tr>
-                        <td colspan="4" style="text-align:right;"> <strong>Total</strong></td>
+                        <td colspan=" 4" style="text-align:right;"> <strong>Total</strong></td>
                         <?php
                         $result1 = $db->prepare("SELECT sum(amount) as total FROM sales_order WHERE invoice=
                         :userid");
-                        $result1->bindParam(':userid', $row1);
+                        $result1->bindParam(':userid', $row);
                         $result1->execute();
                         $row3 = $result1->fetchColumn()
                         ?>
@@ -107,12 +140,20 @@ $row1 = $sql1->fetchColumn();
                             <strong><?php echo formatMoney($row3, true) ?></strong>
                         </td>
                     </tr>
+                    <tr>
+                        <td colspan="4" style="text-align:right;"> Change </td>
+                        <td colspan="1">
+                            <?php echo formatMoney($row1['balance'],true); ?>
+                        </td>
+                    </tr>
 
                 </tbody>
             </table>
         </div>
         <center>
-            <p>Mpesa Till NO:5618115 <br> Goods onces sold are not refundable</p>
+            <p>Goods onces sold are not refundable</p>
+            Equity Paybill: 110337
+            M-pesa till:5209399 </p>
         </center>
     </div>
 </body>

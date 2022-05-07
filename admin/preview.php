@@ -214,9 +214,9 @@ and get more free JavaScript, CSS and DHTML scripts! */
                         <div style="width: 100%; height: 190px;">
                             <div style="float: left;">
                                 <center>
-                                    <div style="font:bold 14px 'Aleo'">
-                                        <div style="width:400px; ;">KIKI EMPIRE OUTLETS 2</div>
-                                        Wholesale & Retail <br> Tel:0722694288 <br><br>
+                                <div style="font:bold 14px 'Aleo'">
+                                        <div style="width:400px; ;">HONEYWELL LIQOUR STORE 1</div>
+                                        Wholesale & Retail <br> Tel:0722679288 <br><br>
                                     </div>
                                 </center>
                                 <div>

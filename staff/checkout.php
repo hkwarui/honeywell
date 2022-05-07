@@ -1,9 +1,7 @@
 <?php 
-require_once 'auth.php';
-
-$transaction_type = 'cash_sales';
-
-?>
+    require_once 'auth.php';
+    $transaction_type = 'cash_sales'
+ ?>
 
 <html>
 
@@ -30,9 +28,12 @@ $transaction_type = 'cash_sales';
 
     function fill(thisValue) {
         $('#country').val(thisValue);
-        setTimeout("$('#suggestions').fadeOut();", 600);
+
     }
+    setTimeout("$('#suggestions').fadeOut();", 600);
     </script>
+
+    <script src="../static/js/application.js"></script>
 
     <style>
     #result {
@@ -116,15 +117,13 @@ $transaction_type = 'cash_sales';
                 <h4><i class="icon icon-money icon-large"></i> Cash</h4>
             </center>
             <hr>
-
             <input type="hidden" name="date" value="<?php echo date("m/d/y"); ?>" />
-            <input type="hidden" name="transaction_type" value="<?php echo $transaction_type ?>" />
+            <input type="hidden" name="transaction_type" value="<?php echo $transaction_type; ?>" />
             <input type="hidden" name="invoice" value="<?php echo $_GET['invoice']; ?>" />
             <input type="hidden" name="amount" value="<?php echo $_GET['total']; ?>" />
             <input type="hidden" name="ptype" value="<?php echo $_GET['pt']; ?>" />
             <input type="hidden" name="cashier" value="<?php echo $_GET['cashier']; ?>" />
             <input type="hidden" name="profit" value="<?php echo $_GET['totalprof']; ?>" />
-           
             <center>
                 <input type="text" size="25" value="" name="cname" id="country" onkeyup="suggest(this.value);"
                     onblur="fill();" class="" autocomplete="off" placeholder="Enter Customer Name"
@@ -133,22 +132,17 @@ $transaction_type = 'cash_sales';
                 <div class="suggestionsBox" id="suggestions" style="display: none;">
                     <div class="suggestionList" id="suggestionsList"> &nbsp; </div>
                 </div>
-                <?php
-$asas = $_GET['pt'];
-if ($asas == 'credit') {
-    ?>Due Date: <input type="date" name="due" placeholder="Due Date"
-                    style="width: 268px; height:30px; margin-bottom: 15px;" /><br>
-                <?php
-}
-if ($asas == 'cash') {
-    ?>
 
-                <input type="number" name="cash" min=<?php echo $_GET['total']; ?> placeholder="Cash"
-                    style="width: 268px; height:30px;  margin-bottom: 15px;" required /><br>
-                <?php
-}
-?><button class="btn btn-success btn-block btn-large" style="width:267px;"><i class="icon icon-save icon-large"></i>
-                    Save</button>
+                <?php $asas = $_GET['pt']; ?>
+
+                <input type="number" name="cash_tendered" min=<?php echo $_GET['total']; ?> placeholder="Cash"
+                    style="width: 268px; height:30px;  margin-bottom: 15px;" required />
+                <br>
+
+                <button class="btn btn-success btn-block btn-large" style="width:267px;">
+                    <i class="icon icon-save icon-large"></i>
+                    Save
+                </button>
             </center>
         </div>
     </form>
