@@ -1,13 +1,15 @@
 <?php
-require_once 'auth.php';
-include '../includes/db_connect.php';
-$id = $_GET['id'];
-$result = $db->prepare("SELECT * FROM products WHERE product_id= :userid");
-$result->bindParam(':userid', $id);
-$result->execute();
-for ($i = 0; $row = $result->fetch(); $i++) {
-    ?>
+    require_once 'auth.php';
+    include '../includes/db_connect.php';
+    $id = $_GET['id'];
+    $result = $db->prepare("SELECT * FROM products WHERE product_id= :userid");
+    $result->bindParam(':userid', $id);
+    $result->execute();
+    for ($i = 0; $row = $result->fetch(); $i++) {
+?>
+
 <link href="../static/css/styles.css" media="screen" rel="stylesheet" type="text/css" />
+
 <form action="saveeditproduct.php" method="post">
     <center>
         <h4><i class="icon-edit icon-large"></i> Edit Product</h4>
@@ -15,7 +17,7 @@ for ($i = 0; $row = $result->fetch(); $i++) {
     <hr>
     <div id="ac">
         <input type="hidden" name="memi" value="<?php echo $id; ?>" />
-        <span>Product Name : </span><input type="text" style="width:265px; height:30px;" name="prod_name"
+        <span>Product Name : </span><input type="text" style="width:265px; height:30px;" name="product_name"
             value="<?php echo $row['product_name']; ?>" Required /><br>
         <span> Description : </span><textarea style="width:265px; height:50px;"
             name="desc"><?php echo $row['description']; ?> </textarea><br>
@@ -34,6 +36,5 @@ for ($i = 0; $row = $result->fetch(); $i++) {
         </div>
     </div>
 </form>
-<?php
-}
-?>
+
+<?php } ?>
