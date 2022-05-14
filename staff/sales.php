@@ -254,23 +254,31 @@
                                     $fgfg = $rowas['sum(amount)'];
                                     echo formatMoney($fgfg, true);
                                 }
+
+                                $res_profit = $db->prepare("SELECT sum(profit) FROM sales_order WHERE invoice= :a");
+                                $res_profit->bindParam(':a', $sdsd);
+                                $res_profit->execute();
+                                for ($i = 0; $rows = $res_profit->fetch(); $i++) {
+                                    $total_profit = $rows['sum(profit)'];
+                                }
+
                             ?> </td>
                     <td   colspan="1" style="font-size: 12px; color: #222222;"></td>
               </tr>
             </tbody>
         </table>
         <br>
-        <a rel="facebox" href="crcheckout.php?pt=<?php echo $_GET['id'] ?>&invoice=<?php echo $_GET['invoice'] ?>&total=<?php echo $fgfg ?>&totalprof=<?php echo $asd ?>&cashier=<?php echo $username ?>">
+        <a rel="facebox" href="crcheckout.php?pt=<?php echo $_GET['id'] ?>&invoice=<?php echo $_GET['invoice'] ?>&total=<?php echo $fgfg ?>&totalprof=<?php echo $total_profit ?>&cashier=<?php echo $username ?>">
         <button class="btn btn-info btn-large btn-inline" style="width: 200px;">
         <i class="icon icon-credit-card icon-large"></i>
                 CREDIT
         </button>
         </a>
-        <a rel="facebox" href="mobile_checkout.php?pt=<?php echo $_GET['id'] ?>&invoice=<?php echo $_GET['invoice'] ?>&total=<?php echo $fgfg ?>&totalprof=<?php echo $asd ?>&cashier=<?php echo $username ?>"><button class="btn btn-large btn-inline" style="width: 200px; margin-left:50px; color:#900C3F;><i
+        <a rel="facebox" href="mobile_checkout.php?pt=<?php echo $_GET['id'] ?>&invoice=<?php echo $_GET['invoice'] ?>&total=<?php echo $fgfg ?>&totalprof=<?php echo $total_profit ?>&cashier=<?php echo $username ?>"><button class="btn btn-large btn-inline" style="width: 200px; margin-left:50px; color:#900C3F;><i
                               class=" icon icon-mobile-phone icon-large"></i>
                 M-Pesa / Equity </button>
         </a>
-        <a rel="facebox" href="checkout.php?pt=<?php echo $_GET['id'] ?>&invoice=<?php echo $_GET['invoice'] ?>&total=<?php echo $fgfg ?>&totalprof=<?php echo $asd ?>&cashier=<?php echo $username ?>"><button class="btn btn-success btn-large btn-inline" style="width: 500px;margin-left:50px"><i class="icon icon-money icon-large"></i>
+        <a rel="facebox" href="checkout.php?pt=<?php echo $_GET['id'] ?>&invoice=<?php echo $_GET['invoice'] ?>&total=<?php echo $fgfg ?>&totalprof=<?php echo $total_profit ?>&cashier=<?php echo $username ?>"><button class="btn btn-success btn-large btn-inline" style="width: 500px;margin-left:50px"><i class="icon icon-money icon-large"></i>
                 CASH</button>
         </a>
         <div class="clearfix"></div>

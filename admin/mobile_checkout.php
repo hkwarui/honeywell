@@ -5,7 +5,7 @@
 <html>
 
 <head>
-    <title>Checkout</title>
+    <title>Mobile Checkout</title>
     <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.js"></script>
     <script>
     function suggest(inputString) {
@@ -128,7 +128,7 @@
                     <option value='buy_goods_and_services'>M-pesa Buy goods and Services</option>
                     <option value='equity_paybill'>Equity Paybill</option>
                 </select>
-                <input type="text" name="cname"  size="=25"  style="width:264px;text-align:center" placeholder="e.g 0735984562"/>
+                <input type="text" name="cname"  size="=25"  style="width:264px;text-align:center" placeholder="e.g 0735984562 / Peter"/>
                 <input type="text" name="show_amount" size="=25"  style="width:264px;text-align:center" value="<?php echo 'KES '.$_GET['total']; ?>"  readonly/>
 
                 <hr>
